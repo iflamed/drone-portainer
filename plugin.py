@@ -1,0 +1,49 @@
+import os
+
+import requests
+
+
+url = os.getenv('PLUGIN_URL') + '/api'
+username = os.getenv('PLUGIN_USERNAME')
+password = os.getenv('PLUGIN_PASSWORD')
+stack = os.getenv('PLUGIN_STACK')
+endpoint = os.getenv('PLUGIN_ENDPOINT') or 'primary'
+
+
+if __name__ == '__main__':
+    jwt = requests.post(
+        url + '/auth',
+        json={
+            'Username': username,
+            'Password': password
+        }
+    ).json()['jwt']
+
+    headers = {
+        'Authorization': 'Bearer ' + jwt
+    }
+
+    for e in requests.get(url + '/endpoints', headers=headers).json():
+        if e['Name'] == endpoint:
+            endpointId = str(e['Id'])
+
+    for s in requests.get(url + '/stacks', headers=headers).json():
+        if s['Name'] == stack:
+            id = str(s['Id'])
+
+    env = requests.get(url + '/stacks/' + id, headers=headers).json()['Env']
+    stackfilecontent = requests.get(
+        url + '/stacks/' + id + '/file',
+        headers=headers).json()['StackFileContent']
+
+    r = requests.put(
+        url + '/stacks/' + id + '?endpointId=' + endpointId,
+        headers=headers,
+        json={
+            'StackFileContent': stackfilecontent,
+            'Env': env,
+            'Prune': False
+        }
+    )
+
+    print(r.text)
