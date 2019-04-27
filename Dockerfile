@@ -7,4 +7,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY plugin.py ./
 
-CMD ["python", "/usr/src/plugin.py"]
+CMD ["python", "/usr/src/app/plugin.py"]
