@@ -1,5 +1,4 @@
 import os
-import sys
 
 import requests
 
@@ -11,49 +10,41 @@ if __name__ == '__main__':
     stack = os.getenv('PLUGIN_STACK') or ''
     endpoint = os.getenv('PLUGIN_ENDPOINT') or 'primary'
 
-    print('URL: ' + url)
-    print('Stack: ' + stack)
+    print('updating stack: ' + stack)
 
-    try:
-        jwt = requests.post(
-            url + '/auth',
-            json={
-                'Username': 'salcedo',
-                'Password': 'hi'
-            }
-        ).json()['jwt']
-
-        headers = {
-            'Authorization': 'Bearer ' + jwt
+    jwt = requests.post(
+        url + '/auth',
+        json={
+            'Username': username,
+            'Password': password
         }
+    ).json()['jwt']
 
-        for e in requests.get(url + '/endpoints', headers=headers).json():
-            if e['Name'] == endpoint:
-                endpointId = str(e['Id'])
+    headers = {
+        'Authorization': 'Bearer ' + jwt
+    }
 
-        for s in requests.get(url + '/stacks', headers=headers).json():
-            if s['Name'] == stack:
-                id = str(s['Id'])
+    for e in requests.get(url + '/endpoints', headers=headers).json():
+        if e['Name'] == endpoint:
+            endpointId = str(e['Id'])
 
-        env = requests.get(
-            url + '/stacks/' + id,
-            headers=headers).json()['Env']
-        stackfilecontent = requests.get(
-            url + '/stacks/' + id + '/file',
-            headers=headers).json()['StackFileContent']
+    for s in requests.get(url + '/stacks', headers=headers).json():
+        if s['Name'] == stack:
+            id = str(s['Id'])
 
-        r = requests.put(
-            url + '/stacks/' + id + '?endpointId=' + endpointId,
-            headers=headers,
-            json={
-                'StackFileContent': stackfilecontent,
-                'Env': env,
-                'Prune': False
-            }
-        )
-    except (KeyError, requests.exceptions.RequestException) as e:
-        print('Stack update failed.')
-        print(e)
-        sys.exit(1)
+    env = requests.get(
+        url + '/stacks/' + id,
+        headers=headers).json()['Env']
+    stackfilecontent = requests.get(
+        url + '/stacks/' + id + '/file',
+        headers=headers).json()['StackFileContent']
 
-    print('Stack update succeeded.')
+    r = requests.put(
+        url + '/stacks/' + id + '?endpointId=' + endpointId,
+        headers=headers,
+        json={
+            'StackFileContent': stackfilecontent,
+            'Env': env,
+            'Prune': False
+        }
+    )
