@@ -11,21 +11,15 @@ if __name__ == '__main__':
     stack = os.getenv('PLUGIN_STACK') or ''
     endpoint = os.getenv('PLUGIN_ENDPOINT') or 'primary'
 
-    print('debug')
-    print(username)
-    print(password)
-    print('debug')
-
-    print('*** Portainer Stack Update')
-    print('*** URL: ' + url)
-    print('*** Stack: ' + stack)
+    print('URL: ' + url)
+    print('Stack: ' + stack)
 
     try:
         jwt = requests.post(
             url + '/auth',
             json={
-                'Username': username,
-                'Password': password
+                'Username': str(username),
+                'Password': str(password)
             }
         ).json()['jwt']
 
@@ -58,8 +52,8 @@ if __name__ == '__main__':
             }
         )
     except (KeyError, requests.exceptions.RequestException) as e:
-        print('*** Stack update failed.')
+        print('Stack update failed.')
         print(e)
         sys.exit(1)
 
-    print('*** Stack update succeeded.')
+    print('Stack update succeeded.')
