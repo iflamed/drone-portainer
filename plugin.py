@@ -11,6 +11,10 @@ if __name__ == '__main__':
     stack = os.getenv('PLUGIN_STACK') or ''
     endpoint = os.getenv('PLUGIN_ENDPOINT') or 'primary'
 
+    print('debug')
+    print(password)
+    print('debug')
+
     print('*** Portainer Stack Update')
     print('*** URL: ' + url)
     print('*** Stack: ' + stack)
