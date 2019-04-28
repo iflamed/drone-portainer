@@ -1,4 +1,5 @@
 import os
+import sys
 
 import requests
 
@@ -10,7 +11,7 @@ if __name__ == '__main__':
     stack = os.getenv('PLUGIN_STACK') or ''
     endpoint = os.getenv('PLUGIN_ENDPOINT') or 'primary'
 
-    print('*** Portainer Stack Deploy')
+    print('*** Portainer Stack Update')
     print('*** URL: ' + url)
     print('*** Stack: ' + stack)
 
@@ -54,5 +55,6 @@ if __name__ == '__main__':
     except (KeyError, requests.exceptions.RequestException) as e:
         print('*** Stack update failed.')
         print(e)
+        sys.exit(1)
 
     print('*** Stack update succeeded.')
