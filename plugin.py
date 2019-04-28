@@ -18,8 +18,8 @@ if __name__ == '__main__':
         jwt = requests.post(
             url + '/auth',
             json={
-                'Username': str(username),
-                'Password': str(password)
+                'Username': 'salcedo',
+                'Password': 'hi'
             }
         ).json()['jwt']
 
