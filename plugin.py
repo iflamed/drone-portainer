@@ -12,6 +12,7 @@ if __name__ == '__main__':
     endpoint = os.getenv('PLUGIN_ENDPOINT') or 'primary'
 
     print('debug')
+    print(username)
     print(password)
     print('debug')
 
