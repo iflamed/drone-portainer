@@ -59,7 +59,6 @@ if __name__ == '__main__':
             }
         )
 
-        print(r.code)
         print(r.text)
     else:
         print('Updating stack "{}"'.format(stack))
@@ -74,5 +73,4 @@ if __name__ == '__main__':
             }
         )
 
-        print(r.code)
         print(r.text)
