@@ -18,7 +18,14 @@ if __name__ == '__main__':
     endpoint = os.getenv('PLUGIN_ENDPOINT') or 'primary'
 
     stackfile = os.getenv('PLUGIN_STACKFILE') or 'docker-stack.yml'
-    env = json.loads(os.getenv('PLUGIN_ENV') or '{}')
+    environment = json.loads(os.getenv('PLUGIN_ENVIRONMENT') or '[]')
+
+    env = []
+    for e in environment:
+        env.append({
+            'name': e,
+            'value': environment[e]
+        })
 
     headers = {
         'Authorization': 'Bearer ' + requests.post(
