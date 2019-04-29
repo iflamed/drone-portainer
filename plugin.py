@@ -56,10 +56,9 @@ if __name__ == '__main__':
             if e['Name'] == endpoint:
                 endpointId = str(e['Id'])
 
-        print("endpointId = " + endpointId)
-
         r = requests.post(
-            url + '/stacks?endpointId=' + endpointId,
+            url + '/stacks?' +
+            'type=1&method=string&endpointId=' + endpointId,
             headers=headers,
             json={
                 'Name': stack,
