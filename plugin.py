@@ -1,15 +1,24 @@
+import json
 import os
+import sys
 
 import requests
 
 
 if __name__ == '__main__':
-    url = os.environ['PLUGIN_URL'] + '/api'
-    username = os.environ['PLUGIN_USERNAME']
-    password = os.environ['PLUGIN_PASSWORD']
-    stack = os.environ['PLUGIN_STACK']
+    try:
+        url = os.environ['PLUGIN_URL'] + '/api'
+        username = os.environ['PLUGIN_USERNAME']
+        password = os.environ['PLUGIN_PASSWORD']
+        stack = os.environ['PLUGIN_STACK']
+    except KeyError:
+        print('Missing required settings.')
+        sys.exit(1)
 
-    print('Updating stack "{}"'.format(stack))
+    endpoint = os.getenv['PLUGIN_ENDPOINT'] or 'primary'
+
+    stackfile = os.getenv['PLUGIN_STACKFILE'] or 'docker-stack.yml'
+    env = json.loads(os.getenv['PLUGIN_ENV'] or '{}')
 
     headers = {
         'Authorization': 'Bearer ' + requests.post(
@@ -20,27 +29,44 @@ if __name__ == '__main__':
         ).json()['jwt']
     }
 
-    for e in requests.get(url + '/endpoints', headers=headers).json():
-        if e['Name'] == 'primary':
-            endpointId = str(e['Id'])
+    if os.path.isfile(stackfile):
+        with open(stackfile) as f:
+            stackfilecontent = f.read()
+    else:
+        print('No stackfile found.')
+        sys.exit(1)
 
     for s in requests.get(url + '/stacks', headers=headers).json():
         if s['Name'] == stack:
             id = str(s['Id'])
+            endpointId = str(s['EndpointId'])
 
-    env = requests.get(
-        url + '/stacks/' + id,
-        headers=headers).json()['Env']
-    stackfilecontent = requests.get(
-        url + '/stacks/' + id + '/file',
-        headers=headers).json()['StackFileContent']
+    if id is None:
+        print('Creating stack "{}"'.format(stack))
 
-    r = requests.put(
-        url + '/stacks/' + id + '?endpointId=' + endpointId,
-        headers=headers,
-        json={
-            'StackFileContent': stackfilecontent,
-            'Env': env,
-            'Prune': False
-        }
-    )
+        for e in requests.get(url + '/endpoints', headers=headers).json():
+            if e['Name'] == endpoint:
+                endpointId = str(e['Id'])
+
+        r = requests.post(
+            url + '/stacks?endpointId=' + endpointId,
+            headers=headers,
+            json={
+                'Name': stack,
+                'StackFileContent': stackfilecontent,
+                'Env': env,
+                'Prune': False
+            }
+        )
+    else:
+        print('Updating stack "{}"'.format(stack))
+
+        r = requests.put(
+            url + '/stacks/' + id + '?endpointId=' + endpointId,
+            headers=headers,
+            json={
+                'StackFileContent': stackfilecontent,
+                'Env': env,
+                'Prune': True
+            }
+        )
