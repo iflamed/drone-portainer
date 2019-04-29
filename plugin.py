@@ -73,8 +73,6 @@ if __name__ == '__main__':
                 'Prune': False
             }
         )
-
-        print(r.text)
     else:
         print('Updating stack "{}"'.format(stack))
 
@@ -87,5 +85,3 @@ if __name__ == '__main__':
                 'Prune': True
             }
         )
-
-        print(r.text)
