@@ -56,12 +56,18 @@ if __name__ == '__main__':
             if e['Name'] == endpoint:
                 endpointId = str(e['Id'])
 
+        swarmId = str(requests.get(
+            url + '/endpoints/' + endpointId + '/docker/info',
+            headers=headers
+        ).json()['Swarm']['Cluster']['ID'])
+
         r = requests.post(
             url + '/stacks?' +
             'type=1&method=string&endpointId=' + endpointId,
             headers=headers,
             json={
                 'Name': stack,
+                'SwarmID': swarmId,
                 'StackFileContent': stackfilecontent,
                 'Env': env,
                 'Prune': False
