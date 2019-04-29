@@ -19,7 +19,9 @@ if __name__ == '__main__':
 
     print(json.dumps(credentials))
 
-    jwt = requests.post(url + '/auth', json=credentials).json()['jwt']
+    jwt = requests.post(url + '/auth', json=credentials).text
+
+    print(jwt)
 
     headers = {
         'Authorization': 'Bearer ' + jwt
