@@ -22,7 +22,7 @@ steps:
       from_secret: portainer_username
     password:
       from_secret: portainer_password
-    env:
+    environment:
       VAR1: value
       VAR2: value
 ```
@@ -47,5 +47,5 @@ Endpoint name. Defaults to `primary`
 `stackfile`
 Stackfile path. Defaults to `docker-stack.yml`
 
-`env`
+`environment`
 Environment variables
