@@ -5,8 +5,8 @@ import requests
 
 if __name__ == '__main__':
     url = (os.getenv('PLUGIN_URL') or '') + '/api'
-    username = os.getenv('PLUGIN_USERNAME') or ''
-    password = os.getenv('PLUGIN_PASSWORD') or ''
+    username = os.environ['PLUGIN_USERNAME']
+    password = os.environ['PLUGIN_PASSWORD']
     stack = os.getenv('PLUGIN_STACK') or ''
     endpoint = os.getenv('PLUGIN_ENDPOINT') or 'primary'
 
