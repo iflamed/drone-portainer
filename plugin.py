@@ -43,6 +43,7 @@ if __name__ == '__main__':
         print('No stackfile found.')
         sys.exit(1)
 
+    id = None
     for s in requests.get(url + '/stacks', headers=headers).json():
         if s['Name'] == stack:
             id = str(s['Id'])
