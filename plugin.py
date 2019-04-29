@@ -1,4 +1,3 @@
-import json
 import os
 
 import requests
@@ -10,21 +9,15 @@ if __name__ == '__main__':
     password = os.environ['PLUGIN_PASSWORD']
     stack = os.environ['PLUGIN_STACK']
 
-    print('updating stack: ' + stack)
-
-    credentials = {
-        'Username': username,
-        'Password': password
-    }
-
-    print(json.dumps(credentials))
-
-    jwt = requests.post(url + '/auth', json=credentials).text
-
-    print(jwt)
+    print('Updating stack "{}"'.format(stack))
 
     headers = {
-        'Authorization': 'Bearer ' + jwt
+        'Authorization': 'Bearer ' + requests.post(
+            url + '/auth', json={
+                'Username': username,
+                'Password': password
+            }
+        ).json()['jwt']
     }
 
     for e in requests.get(url + '/endpoints', headers=headers).json():
