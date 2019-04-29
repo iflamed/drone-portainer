@@ -15,10 +15,10 @@ if __name__ == '__main__':
         print('Missing required settings.')
         sys.exit(1)
 
-    endpoint = os.getenv['PLUGIN_ENDPOINT'] or 'primary'
+    endpoint = os.getenv('PLUGIN_ENDPOINT') or 'primary'
 
-    stackfile = os.getenv['PLUGIN_STACKFILE'] or 'docker-stack.yml'
-    env = json.loads(os.getenv['PLUGIN_ENV'] or '{}')
+    stackfile = os.getenv('PLUGIN_STACKFILE') or 'docker-stack.yml'
+    env = json.loads(os.getenv('PLUGIN_ENV') or '{}')
 
     headers = {
         'Authorization': 'Bearer ' + requests.post(
