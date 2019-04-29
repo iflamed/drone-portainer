@@ -1,3 +1,4 @@
+import json
 import os
 
 import requests
@@ -15,6 +16,8 @@ if __name__ == '__main__':
         'Username': username,
         'Password': password
     }
+
+    print(json.dumps(credentials))
 
     jwt = requests.post(url + '/auth', json=credentials).json()['jwt']
 
