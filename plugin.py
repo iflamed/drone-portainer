@@ -27,13 +27,17 @@ if __name__ == '__main__':
             'value': environment[e]
         })
 
+    r = requests.post(
+        url + '/auth', json={
+            'Username': username,
+            'Password': password
+        }
+    )
+
+    print(r.text)
+
     headers = {
-        'Authorization': 'Bearer ' + requests.post(
-            url + '/auth', json={
-                'Username': username,
-                'Password': password
-            }
-        ).json()['jwt']
+        'Authorization': 'Bearer ' + r.json()['jwt']
     }
 
     if os.path.isfile(stackfile):
