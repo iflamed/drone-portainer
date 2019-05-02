@@ -8,6 +8,6 @@ steps:
       repo: dkr.salcedo.tech/drone-portainer
       registry: dkr.salcedo.tech
       username:
-        from_secret: registry_user
+        from_secret: registry_username
       password:
         from_secret: registry_password
