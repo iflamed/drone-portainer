@@ -49,3 +49,4 @@ Stackfile path. Defaults to `docker-stack.yml`
 
 `environment`
 Environment variables
+
