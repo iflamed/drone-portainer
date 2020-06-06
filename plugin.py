@@ -4,6 +4,7 @@ import sys
 
 import requests
 
+const_tag = '$tag$'
 
 if __name__ == '__main__':
     try:
@@ -19,6 +20,8 @@ if __name__ == '__main__':
 
     stackfile = os.getenv('PLUGIN_STACKFILE') or 'docker-stack.yml'
     environment = json.loads(os.getenv('PLUGIN_ENVIRONMENT') or '[]')
+
+    tag = os.environ['PLUGIN_TAG'] or ':latest'
 
     env = []
     for e in environment:
@@ -46,6 +49,9 @@ if __name__ == '__main__':
     else:
         print('No stackfile found.')
         sys.exit(1)
+    
+    # replace deploy tag
+    stackfilecontent = stackfilecontent.replace(const_tag, tag)
 
     id = None
     for s in requests.get(url + '/stacks', headers=headers).json():
