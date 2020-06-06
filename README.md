@@ -2,6 +2,8 @@
 
 Deploy and update Docker Swarm stacks via Portainer API
 
+fork from https://salcedo.dev/salcedo/drone-portainer
+
 # Build
 
 `docker build -t drone-portainer .`

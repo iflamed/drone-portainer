@@ -5,9 +5,13 @@ steps:
   - name: build
     image: plugins/docker
     settings:
-      repo: dkr.salcedo.tech/drone-portainer
-      registry: dkr.salcedo.tech
+      repo: 192.168.50.252:65000/allanpk716/drone-portainer
+      storage_driver: vfs    #出错原因就是它
+      registry: 192.168.50.252:65000
+      insecure: true         #私有仓库未设置HTTPS需要启用这个选项
       username:
         from_secret: registry_username
       password:
         from_secret: registry_password
+      tags:
+        - latest
