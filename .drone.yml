@@ -15,3 +15,17 @@ steps:
         from_secret: registry_password
       tags:
         - latest
+# Bark 通知
+-   name: Bark Notify
+    image: byrnedo/alpine-curl
+    environment:
+        barkfront:
+            from_secret: bark_front
+        droneweb: 
+            from_secret: drone_web
+    commands:
+    - curl "$barkfront/${DRONE_REPO_NAME}?url=$droneweb/${DRONE_REPO}/${DRONE_BUILD_NUMBER}"
+    when:
+        status:
+        - success
+        - failure
