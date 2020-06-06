@@ -54,6 +54,5 @@ Stackfile path. Defaults to `docker-stack.yml`
 Environment variables
 
 `tag`
-
 Drone build tag
 

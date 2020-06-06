@@ -9,8 +9,8 @@ const_tag = '$tag$'
 if __name__ == '__main__':
     try:
         url = os.environ['PLUGIN_URL'] + '/api'
-        username = os.environ['PLUGIN_USERNAME']
-        password = os.environ['PLUGIN_PASSWORD']
+        username = os.environ['PLUGIN_PORTAINER_USERNAME']
+        password = os.environ['PLUGIN_PORTAINER_PASSWORD']
         stack = os.environ['PLUGIN_STACK']
     except KeyError:
         print('Missing required settings.')
@@ -21,7 +21,7 @@ if __name__ == '__main__':
     stackfile = os.getenv('PLUGIN_STACKFILE') or 'docker-stack.yml'
     environment = json.loads(os.getenv('PLUGIN_ENVIRONMENT') or '[]')
 
-    tag = os.environ['PLUGIN_TAG'] or ':latest'
+    tag = os.getenv('PLUGIN_TAG') or ':latest'
 
     env = []
     for e in environment:
