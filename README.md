@@ -10,7 +10,7 @@ fork from https://salcedo.dev/salcedo/drone-portainer
 
 # Usage
 
-```
+```yaml
 kind: pipeline
 name: default
 
@@ -20,6 +20,7 @@ steps:
   settings:
     url: https://portainer.example.org
     stack: example
+    tag: ${DRONE_TAG}
     username:
       from_secret: portainer_username
     password:
@@ -51,4 +52,8 @@ Stackfile path. Defaults to `docker-stack.yml`
 
 `environment`
 Environment variables
+
+`tag`
+
+Drone build tag
 
