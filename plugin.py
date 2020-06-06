@@ -44,7 +44,7 @@ if __name__ == '__main__':
     }
 
     if os.path.isfile(stackfile):
-        with open(stackfile) as f:
+        with open(stackfile, encoding='utf-8') as f:
             stackfilecontent = f.read()
     else:
         print('No stackfile found.')
@@ -95,3 +95,8 @@ if __name__ == '__main__':
                 'Prune': True
             }
         )
+
+    if r.status_code == 200:
+        print('Done.')
+    else:
+        print(r.text)
