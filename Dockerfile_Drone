@@ -1,4 +1,4 @@
-FROM python:3.7.7-alpine
+FROM 192.168.50.252:65000/python:3.7.7-alpine
 
 WORKDIR /usr/src/app
 
