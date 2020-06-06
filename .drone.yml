@@ -1,8 +1,10 @@
 kind: pipeline
+type: docker
 name: drone-portainer
 
 steps:
-  - name: build
+# 构建代码 docker 镜像
+-   name: build
     image: plugins/docker
     settings:
       repo: 192.168.50.252:65000/allanpk716/drone-portainer
