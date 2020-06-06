@@ -13,9 +13,9 @@ steps:
         registry: 192.168.50.252:65000
         insecure: true         #私有仓库未设置HTTPS需要启用这个选项
         username:
-            from_secret: registry_username
+            from_secret: docker_pushername
         password:
-            from_secret: registry_password
+            from_secret: docker_pusherpwd
         tags:
             - latest
 # Bark 通知
