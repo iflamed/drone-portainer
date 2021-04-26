@@ -4,7 +4,8 @@ import sys
 
 import requests
 
-const_tag = '$tag$'
+const_tag = '${DOCKER_TAG}'
+const_repo = '${DOCKER_REPO}'
 
 if __name__ == '__main__':
     try:
@@ -21,7 +22,12 @@ if __name__ == '__main__':
     stackfile = os.getenv('PLUGIN_STACKFILE') or 'docker-stack.yml'
     environment = json.loads(os.getenv('PLUGIN_ENVIRONMENT') or '[]')
 
-    tag = os.getenv('PLUGIN_TAG') or ':latest'
+    tag = os.getenv('DRONE_TAG') or 'latest'
+    if tag.startswith('v'):
+        tag = tag[len('v'):]
+
+    repo = os.getenv('PLUGIN_REPO') or ''
+    debug = os.getenv('PLUGIN_DEBUG') or ''
 
     env = []
     for e in environment:
@@ -36,8 +42,8 @@ if __name__ == '__main__':
             'Password': password
         }
     )
-
-    print(r.text)
+    if debug != '':
+        print(r.text)
 
     headers = {
         'Authorization': 'Bearer ' + r.json()['jwt']
@@ -49,9 +55,12 @@ if __name__ == '__main__':
     else:
         print('No stackfile found.')
         sys.exit(1)
-    
+
     # replace deploy tag
     stackfilecontent = stackfilecontent.replace(const_tag, tag)
+    stackfilecontent = stackfilecontent.replace(const_repo, repo)
+    if debug != '':
+        print(stackfilecontent)
 
     id = None
     for s in requests.get(url + '/stacks', headers=headers).json():

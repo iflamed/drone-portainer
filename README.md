@@ -20,7 +20,8 @@ steps:
   settings:
     url: https://portainer.example.org
     stack: example
-    tag: ${DRONE_TAG}
+    repo:
+      from_secret: DOCKER_REPO
     username:
       from_secret: portainer_username
     password:
@@ -41,6 +42,9 @@ Name of stack to create or update
 `username`
 Portainer username
 
+`repo`
+docker image repo with registry
+
 `password`
 Portainer password
 
@@ -52,7 +56,4 @@ Stackfile path. Defaults to `docker-stack.yml`
 
 `environment`
 Environment variables
-
-`tag`
-Drone build tag
 
